@@ -14,7 +14,7 @@ interface IProps {
 class App extends React.Component<IProps, any> {
   public render() {
     return (
-      <Layout>
+      <Layout style={{ width: '100%', height: '100%' }}>
         <Header>
           <Menu
             theme="dark"

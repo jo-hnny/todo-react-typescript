@@ -28,6 +28,7 @@ export default class Types extends React.Component<IProps, IState> {
     if (e.target.value) {
       this.props.addType(e.target.value)
     }
+    e.target.value = ''
     this.setState({ showInput: false })
   }
 
@@ -35,6 +36,7 @@ export default class Types extends React.Component<IProps, IState> {
     const TypeItem = Styled(Menu.Item)`
       display: flex;
       justify-content: space-between;
+      align-items: center;
     `
     return (
       <div>
@@ -50,7 +52,7 @@ export default class Types extends React.Component<IProps, IState> {
                 type="primary"
                 onClick={this.props.deleteType.bind(this, index)}
               >
-                <Icon type="delete" />
+                <Icon type="delete" style={{ margin: 0 }} />
               </Button>
             </TypeItem>
           ))}

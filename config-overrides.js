@@ -5,7 +5,10 @@ const rewireLess = require('react-app-rewire-less')
 module.exports = function override(config, env) {
   const tsLoader = getLoader(
     config.module.rules,
-    rule => rule.loader && typeof rule.loader === 'string' && rule.loader.includes('ts-loader')
+    rule =>
+      rule.loader &&
+      typeof rule.loader === 'string' &&
+      rule.loader.includes('ts-loader')
   )
 
   tsLoader.options = {
@@ -21,7 +24,7 @@ module.exports = function override(config, env) {
   }
 
   config = rewireLess.withLoaderOptions({
-    modifyVars: { '@primary-color': '#1DA57A' }
+    modifyVars: { '@primary-color': '#08d9d6' }
   })(config, env)
 
   return config
