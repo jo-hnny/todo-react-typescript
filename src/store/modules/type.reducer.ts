@@ -1,7 +1,11 @@
 export const ADD_TYPE = 'ADD_TYPE'
 export const DELETE_TYPE = 'DELETE_TYPE'
 
-const defaultState = {
+interface IState {
+  types: string[]
+}
+
+const defaultState: IState = {
   types: ['默认']
 }
 
@@ -15,8 +19,7 @@ export const deleteType = (index: number) => ({
   payload: index
 })
 
-export default (state = defaultState, { type, payload }: any): any => {
-  console.log(payload)
+export default (state = defaultState, { type, payload }: any): IState => {
   switch (type) {
     case ADD_TYPE:
       return {
