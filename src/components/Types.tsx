@@ -73,6 +73,7 @@ export default class Types extends React.Component<IProps, IState> {
           type="text"
           style={{
             margin: '10px auto',
+            width: '95%',
             display: this.state.showInput ? 'block' : 'none'
           }}
           onPressEnter={this.addType}
@@ -80,7 +81,7 @@ export default class Types extends React.Component<IProps, IState> {
         />
         <Button
           type="primary"
-          style={{ width: '100%', margin: '0 auto' }}
+          style={{ display: 'block', width: '95%', margin: '0 auto' }}
           onClick={this.showInput}
         >
           <Icon type="plus" />
