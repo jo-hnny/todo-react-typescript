@@ -4,8 +4,10 @@ import Styled from 'styled-components'
 
 interface IProps {
   types: string[]
+  currentType: string
   addType: (type: string) => void
   deleteType: (index: number) => void
+  changeCurrentType: (type: string) => void
 }
 
 interface IState {
@@ -30,9 +32,14 @@ export default class Types extends React.Component<IProps, IState> {
   public addType = (e: any) => {
     if (e.target.value) {
       this.props.addType(e.target.value)
+      this.props.changeCurrentType(e.target.value)
     }
     e.target.value = ''
     this.setState({ showInput: false })
+  }
+
+  public changeCurrentType = ({ key }: any) => {
+    this.props.changeCurrentType(key)
   }
 
   public render() {
@@ -45,11 +52,12 @@ export default class Types extends React.Component<IProps, IState> {
       <div>
         <Menu
           mode="inline"
-          defaultSelectedKeys={['0']}
+          selectedKeys={[this.props.currentType]}
           style={{ height: '100%', borderRight: 0 }}
+          onSelect={this.changeCurrentType}
         >
           {this.props.types.map((type, index) => (
-            <TypeItem key={index}>
+            <TypeItem key={type}>
               {type}
               <Button
                 type="primary"
@@ -67,6 +75,7 @@ export default class Types extends React.Component<IProps, IState> {
             margin: '10px auto',
             display: this.state.showInput ? 'block' : 'none'
           }}
+          onPressEnter={this.addType}
           onBlur={this.addType}
         />
         <Button

@@ -3,12 +3,29 @@ import { Layout, Menu } from 'antd'
 const { Header, Sider, Content } = Layout
 import { connect } from 'react-redux'
 import Types from './components/Types'
-import { addType, deleteType } from './store/modules/type.reducer'
+import TodoList from './components/TodoList'
+import {
+  addType,
+  deleteType,
+  changeCurrentType
+} from './store/modules/type.reducer'
+import {
+  ITodo,
+  delTodo,
+  changeTodoStatus,
+  addTodo
+} from './store/modules/todo.reducer'
 
 interface IProps {
   types: string[]
+  todoList: ITodo[]
+  currentType: string
   addType: (type: string) => void
   deleteType: (index: number) => void
+  changeCurrentType: (type: string) => void
+  delTodo: (index: number) => void
+  addTodo: (todo: ITodo) => void
+  changeTodoStatus: (index: number) => void
 }
 
 class App extends React.Component<IProps, any> {
@@ -23,7 +40,6 @@ class App extends React.Component<IProps, any> {
             style={{ lineHeight: '64px' }}
           >
             <Menu.Item key="1">我的TODO</Menu.Item>
-            <Menu.Item key="2">类型管理</Menu.Item>
           </Menu>
         </Header>
         <Layout>
@@ -32,6 +48,8 @@ class App extends React.Component<IProps, any> {
               types={this.props.types}
               deleteType={this.props.deleteType}
               addType={this.props.addType}
+              changeCurrentType={this.props.changeCurrentType}
+              currentType={this.props.currentType}
             />
           </Sider>
           <Layout style={{ padding: '24px' }}>
@@ -40,10 +58,17 @@ class App extends React.Component<IProps, any> {
                 background: '#fff',
                 padding: 24,
                 margin: 0,
-                minHeight: 280
+                minHeight: 280,
+                position: 'relative'
               }}
             >
-              12312
+              <TodoList
+                todoList={this.props.todoList}
+                delTodo={this.props.delTodo}
+                addTodo={this.props.addTodo}
+                changeTodoStatus={this.props.changeTodoStatus}
+                currentType={this.props.currentType}
+              />
             </Content>
           </Layout>
         </Layout>
@@ -54,11 +79,19 @@ class App extends React.Component<IProps, any> {
 
 const mapDispatchToProps = (dispatch: any) => ({
   addType: (type: string) => dispatch(addType(type)),
-  deleteType: (index: number) => dispatch(deleteType(index))
+  deleteType: (index: number) => dispatch(deleteType(index)),
+  changeCurrentType: (type: string) => dispatch(changeCurrentType(type)),
+  delTodo: (index: number) => dispatch(delTodo(index)),
+  addTodo: (todo: ITodo) => dispatch(addTodo(todo)),
+  changeTodoStatus: (index: number) => dispatch(changeTodoStatus(index))
 })
 
-const mapStateToProps = ({ type }: any) => ({
-  types: type.types
+const mapStateToProps = ({ type, todo }: any) => ({
+  types: type.types,
+  currentType: type.currentType,
+  todoList: todo.todoList.filter(
+    (item: ITodo) => item.type === type.currentType
+  )
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App)
