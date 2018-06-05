@@ -1,3 +1,5 @@
+import { readJson, saveJson } from '../../storage'
+
 export interface ITodo {
   content: string
   type: string
@@ -35,30 +37,36 @@ interface IState {
   todoList: ITodo[]
 }
 
-const defaultState: IState = {
+const defaultState: IState = readJson('todo') || {
   todoList: [{ content: 'hello', type: '默认', status: true }]
 }
 
 export default (state = defaultState, { type, payload }: any): IState => {
+  let newState: IState
   switch (type) {
     case DEL_TODO:
-      return {
+      newState = {
         ...state,
         todoList: state.todoList.filter((_, index) => index !== payload)
       }
+      break
     case CHANGE_TODO_STATUS:
-      return {
+      newState = {
         ...state,
         todoList: state.todoList.map((item, index) => {
           return index === payload ? { ...item, status: !item.status } : item
         })
       }
+      break
     case ADD_TODO:
-      return {
+      newState = {
         ...state,
         todoList: [...state.todoList, payload]
       }
+      break
     default:
-      return { ...state }
+      newState = { ...state }
   }
+  saveJson('todo', newState)
+  return newState
 }

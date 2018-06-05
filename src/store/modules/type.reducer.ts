@@ -1,3 +1,5 @@
+import { readJson, saveJson } from '../../storage'
+
 const ADD_TYPE = 'ADD_TYPE'
 const DELETE_TYPE = 'DELETE_TYPE'
 const CHANGE_CURRENT_TYPE = 'CHANGE_CURRENT_TYPE'
@@ -7,7 +9,7 @@ interface IState {
   currentType: string
 }
 
-const defaultState: IState = {
+const defaultState: IState = readJson('type') || {
   types: ['默认'],
   currentType: '默认'
 }
@@ -28,23 +30,29 @@ export const changeCurrentType = (type: string) => ({
 })
 
 export default (state = defaultState, { type, payload }: any): IState => {
+  let newState: IState
   switch (type) {
     case ADD_TYPE:
-      return {
+      newState = {
         ...state,
         types: [...state.types, payload]
       }
+      break
     case DELETE_TYPE:
-      return {
+      newState = {
         ...state,
         types: [...state.types.filter((_, index) => index !== payload)]
       }
+      break
     case CHANGE_CURRENT_TYPE:
-      return {
+      newState = {
         ...state,
         currentType: payload
       }
+      break
     default:
-      return { ...state }
+      newState = { ...state }
   }
+  saveJson('type', newState)
+  return newState
 }
