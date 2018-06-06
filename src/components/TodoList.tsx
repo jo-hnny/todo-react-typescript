@@ -45,11 +45,10 @@ export default class TodoList extends React.Component<IProps, IState> {
 
   public modalShow = () => {
     this.setState({ showModal: true })
-    setTimeout(() => {
-      if (this.inputRef.current) {
-        this.inputRef.current.input.focus()
-      }
-    }, 0)
+    setTimeout(
+      () => this.inputRef.current && this.inputRef.current.input.focus(),
+      0
+    )
   }
 
   public changeTodoContent = (e: any) => {

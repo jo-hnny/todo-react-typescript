@@ -22,10 +22,9 @@ export default class Types extends React.Component<IProps, IState> {
   private readonly inputRef: React.RefObject<Input> = React.createRef()
 
   public showInput = () => {
-    this.setState({ showInput: true })
-    setTimeout(
-      () => this.inputRef.current && this.inputRef.current.input.focus(),
-      0
+    this.setState(
+      { showInput: true },
+      () => this.inputRef.current && this.inputRef.current.input.focus()
     )
   }
 
