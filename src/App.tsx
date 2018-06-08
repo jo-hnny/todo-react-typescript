@@ -25,7 +25,7 @@ interface IProps {
   changeCurrentType: (type: string) => void
   delTodo: (index: number) => void
   addTodo: (todo: ITodo) => void
-  changeTodoStatus: (index: number) => void
+  changeTodoStatus: (payload: { index: number; type: string }) => void
 }
 
 class App extends React.Component<IProps, any> {
@@ -83,7 +83,8 @@ const mapDispatchToProps = (dispatch: any) => ({
   changeCurrentType: (type: string) => dispatch(changeCurrentType(type)),
   delTodo: (index: number) => dispatch(delTodo(index)),
   addTodo: (todo: ITodo) => dispatch(addTodo(todo)),
-  changeTodoStatus: (index: number) => dispatch(changeTodoStatus(index))
+  changeTodoStatus: (payload: { type: string; index: number }) =>
+    dispatch(changeTodoStatus(payload))
 })
 
 const mapStateToProps = ({ type, todo }: any) => ({
@@ -94,4 +95,7 @@ const mapStateToProps = ({ type, todo }: any) => ({
   )
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App)

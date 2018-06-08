@@ -8,7 +8,7 @@ export interface IProps {
   currentType: string
   delTodo: (index: number) => void
   addTodo: (todo: ITodo) => void
-  changeTodoStatus: (index: number) => void
+  changeTodoStatus: (payload: { index: number; type: string }) => void
 }
 
 interface IState {
@@ -61,14 +61,14 @@ export default class TodoList extends React.Component<IProps, IState> {
         return props.status ? 'line-through' : 'none'
       }};
     `
-    const renderItem = ({ content, status }: ITodo, index: number) => (
+    const renderItem = ({ content, status, type }: ITodo, index: number) => (
       <List.Item
         key={index}
         actions={[
           <Checkbox
             key={index}
             checked={status}
-            onChange={this.props.changeTodoStatus.bind(this, index)}
+            onChange={this.props.changeTodoStatus.bind(this, { index, type })}
           />
         ]}
       >

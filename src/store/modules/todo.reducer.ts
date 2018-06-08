@@ -26,10 +26,10 @@ export const addTodo = (todo: ITodo) => {
   }
 }
 
-export const changeTodoStatus = (index: number) => {
+export const changeTodoStatus = (payload: { index: number; type: string }) => {
   return {
     type: CHANGE_TODO_STATUS,
-    payload: index
+    payload
   }
 }
 
@@ -53,9 +53,16 @@ export default (state = defaultState, { type, payload }: any): IState => {
     case CHANGE_TODO_STATUS:
       newState = {
         ...state,
-        todoList: state.todoList.map((item, index) => {
-          return index === payload ? { ...item, status: !item.status } : item
-        })
+        todoList: [
+          ...state.todoList.filter((todo: ITodo) => todo.type !== payload.type),
+          ...state.todoList
+            .filter((todo: ITodo) => todo.type === payload.type)
+            .map((item: ITodo, index: number) => {
+              return index === payload.index
+                ? { ...item, status: !item.status }
+                : item
+            })
+        ]
       }
       break
     case ADD_TODO:
